@@ -11,6 +11,7 @@ export TOPIC_NAME=
 export FUNCTION_NAME=
 ```
 ```
+gcloud config set compute/region $REGION
 gcloud services enable \
   artifactregistry.googleapis.com \
   cloudfunctions.googleapis.com \
