@@ -5,6 +5,7 @@
 ### Run the following Commands in CloudShell
 
 ```
+export REGION=
 export USERNAME2=
 export TOPIC_NAME=
 export FUNCTION_NAME=
@@ -31,12 +32,6 @@ PROJECT_NUMBER=$(gcloud projects list --filter="project_id:$DEVSHELL_PROJECT_ID"
 SERVICE_ACCOUNT="$(gsutil kms serviceaccount -p $DEVSHELL_PROJECT_ID)"
 
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
-  --role=roles/iam.serviceAccountTokenCreator
-
-sleep 10
-
-gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
   --role=roles/eventarc.eventReceiver
 
@@ -49,12 +44,18 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
 sleep 15
 
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:$SERVICE_ACCOUNT \
-  --role=roles/pubsub.publisher
+  --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
+  --role=roles/iam.serviceAccountTokenCreator
 
 sleep 10
 
-mkdir ~/soumen && cd $_
+gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+  --member=serviceAccount:$SERVICE_ACCOUNT \
+  --role=roles/pubsub.publisher
+
+sleep 20
+
+mkdir ~/soumen && cd ~/soumen
 touch index.js && touch package.json
 
 cat > index.js <<'EOF_END'
@@ -153,27 +154,23 @@ deploy_function () {
   gcloud functions deploy $FUNCTION_NAME \
     --gen2 \
     --runtime nodejs20 \
+    --region=$REGION \
     --entry-point thumbnail \
     --source . \
     --trigger-bucket travel-bucket-$DEVSHELL_PROJECT_ID \
+    --trigger-location $REGION \
     --allow-unauthenticated \
     --max-instances 5 \
     --quiet
 }
 
-DEPLOYED_FUNCTION="$FUNCTION_NAME"
-
-while true; do
-  deploy_function
-  if gcloud run services describe $DEPLOYED_FUNCTION &> /dev/null; then
-    echo "Cloud Run service deployment confirmed as successful."
-    break
-  else
-    echo "Waiting for deployment to complete, next retry in 10 seconds..."
-    echo "If everything works, consider liking and commenting on this informative video."
-    sleep 10
-  fi
+while ! gcloud run services describe "$FUNCTION_NAME" --region="$REGION" &> /dev/null; do
+  echo "Waiting for deployment to complete, next retry in 10 seconds..."
+  echo "If everything works, consider liking and commenting on this informative video."
+  sleep 10
 done
+
+echo "Cloud Run service deployment confirmed as successful."
 
 wget https://storage.googleapis.com/cloud-training/arc101/travel.jpg
 
@@ -181,7 +178,6 @@ gsutil cp travel.jpg gs://travel-bucket-$DEVSHELL_PROJECT_ID
 
 ```
 ```
-cd soumen
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:$SERVICE_ACCOUNT \
   --role=roles/artifactregistry.reader
