@@ -1,6 +1,6 @@
 # Monitor and Manage Google Cloud Resources: Challenge Lab || [ARC101](https://www.cloudskillsboost.google/focuses/60441?parent=catalog) ||
 
-## Solution [here]()
+## Youtube Video Link [here]()
 
 ### Run the following Commands in CloudShell
 
@@ -234,4 +234,4 @@ sleep 200
 
 ##### *You Have Successfully Demonstrated Your Skills And Determination.*
 
-#### Let's connect together in [Linkedin](https://www.linkedin.com/in/soumen-kumar-26364a271/)
+### *Let's connect together in [Linkedin](https://www.linkedin.com/in/soumen-kumar-26364a271/)*
