@@ -12,6 +12,7 @@ export FUNCTION_NAME=
 ```
 ```
 gcloud config set compute/region $REGION
+BUCKET_NAME=travel-bucket-$DEVSHELL_PROJECT_ID
 
 gcloud services enable \
   artifactregistry.googleapis.com \
@@ -24,10 +25,11 @@ gcloud services enable \
 
 sleep 20
 
-gsutil mb gs://travel-bucket-$DEVSHELL_PROJECT_ID
+gsutil mb gs://$BUCKET_NAME
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
 --member=user:$USERNAME2 \
 --role="roles/storage.objectViewer"
+
 gcloud pubsub topics create $TOPIC_NAME
 
 PROJECT_NUMBER=$(gcloud projects list --filter="project_id:$DEVSHELL_PROJECT_ID" --format='value(project_number)')
@@ -152,31 +154,32 @@ cat > package.json <<EOF_END
   }
 EOF_END
 
-deploy_function () {
-  gcloud functions deploy $FUNCTION_NAME \
-    --gen2 \
-    --runtime nodejs20 \
-    --region=$REGION \
-    --entry-point thumbnail \
-    --source . \
-    --trigger-bucket travel-bucket-$DEVSHELL_PROJECT_ID \
-    --trigger-location $REGION \
-    --allow-unauthenticated \
-    --max-instances 5 \
-    --quiet
-}
+
+  deploy_function () {
+    gcloud functions deploy $FUNCTION_NAME \
+      --gen2 \
+      --runtime nodejs20 \
+      --entry-point thumbnail \
+      --source . \
+      --region $REGION \
+      --trigger-bucket $BUCKET_NAME \
+      --allow-unauthenticated \
+      --trigger-location $REGION \
+      --max-instances 5 \
+      --quiet
+  }
+   
 
 while ! gcloud run services describe "$FUNCTION_NAME" --region="$REGION" &> /dev/null; do
   echo "Waiting for deployment to complete, next retry in 10 seconds..."
   echo "If everything works, consider liking and commenting on this informative video."
   sleep 10
 done
-
 echo "Cloud Run service deployment confirmed as successful."
 
 wget https://storage.googleapis.com/cloud-training/arc101/travel.jpg
 
-gsutil cp travel.jpg gs://travel-bucket-$DEVSHELL_PROJECT_ID
+gsutil cp travel.jpg gs://$BUCKET_NAME
 
 ```
 ```
