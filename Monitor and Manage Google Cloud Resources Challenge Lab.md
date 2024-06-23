@@ -156,8 +156,8 @@ EOF_END
 
 
 deploy_function() {
+  echo "Deploying Cloud Function..."
   gcloud functions deploy $FUNCTION_NAME \
-    --gen2 \
     --runtime=nodejs20 \
     --trigger-resource=$BUCKET_NAME \
     --trigger-event=google.storage.object.finalize \
@@ -165,6 +165,8 @@ deploy_function() {
     --region=$REGION \
     --source=. \
     --max-instances=5 \
+    --timeout=540 \
+    --memory=512MB \
     --quiet
 }
 
