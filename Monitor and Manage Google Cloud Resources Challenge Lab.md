@@ -132,7 +132,7 @@ exports.thumbnail = (event, context) => {
 };
 EOF_END
 
-sed -i '17c\  const topicName = "'$TOPIC_NAME'";' index.js
+sed -i '16c\  const topicName = "'$TOPIC_NAME'";' index.js
 
 cat > package.json <<EOF_END
 {
