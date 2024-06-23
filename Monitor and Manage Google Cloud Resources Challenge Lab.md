@@ -63,7 +63,6 @@ mkdir ~/soumen && cd ~/soumen
 touch index.js && touch package.json
 
 cat > index.js <<'EOF_END'
-
 /* globals exports, require */
 //jshint strict: false
 //jshint esversion: 6
@@ -79,7 +78,7 @@ exports.thumbnail = (event, context) => {
   const bucketName = event.bucket;
   const size = "64x64"
   const bucket = gcs.bucket(bucketName);
-  const topicName = "REPLACE_WITH_YOUR_TOPIC ID";
+  const topicName = "$TOPIC_NAME";
   const pubsub = new PubSub();
   if ( fileName.search("64x64_thumbnail") == -1 ){
     // doesn't have a thumbnail, get the filename extension
@@ -132,7 +131,6 @@ exports.thumbnail = (event, context) => {
 };
 EOF_END
 
-sed -i '16c\  const topicName = "'$TOPIC_NAME'";' index.js
 
 cat > package.json <<EOF_END
 {
@@ -157,25 +155,36 @@ EOF_END
 
 
 deploy_function() {
-    gcloud functions deploy $FUNCTION_NAME \
+  gcloud functions deploy $FUNCTION_NAME \
     --gen2 \
-    --runtime nodejs20 \
-    --trigger-resource $BUCKET_NAME \
-    --trigger-event google.storage.object.finalize \
-    --entry-point thumbnail \
+    --runtime=nodejs20 \
+    --trigger-resource=$BUCKET_NAME \
+    --trigger-event=google.storage.object.finalize \
+    --entry-point=thumbnail \
     --region=$REGION \
-    --source . \
-    --max-instances 5 \
+    --source=. \
+    --max-instances=5 \
     --quiet
 }
-   
 
-while ! gcloud run services describe "$FUNCTION_NAME" --region="$REGION" &> /dev/null; do
-  echo "Waiting for deployment to complete, next retry in 10 seconds..."
-  echo "If everything works, consider liking and commenting on this informative video."
-  sleep 10
-done
-echo "Cloud Run service deployment confirmed as successful."
+check_function_status() {
+  gcloud functions describe "$FUNCTION_NAME" --region="$REGION" --format="value(status)"
+}
+
+while true; do
+  deploy_function
+  
+  while true; do
+    status=$(check_function_status)
+    if [[ "$status" == "ACTIVE" ]]; then
+      echo "Cloud Function deployment confirmed as successful."
+      break
+    else
+      echo "Waiting for deployment to complete, next retry in 210 seconds..."
+      echo "Aur Kiya Time Bhot Lagega Tabtak Reels Scroll Karlo..."
+      sleep 210
+    fi
+  done
 
 wget https://storage.googleapis.com/cloud-training/arc101/travel.jpg
 
