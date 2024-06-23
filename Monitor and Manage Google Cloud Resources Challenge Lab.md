@@ -71,7 +71,7 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
 
 > For ``Entry point`` paste `thumbnail`
 
-> Click on ``index.js`` > Paste this code
+> Click on ``index.js`` > Paste the code below
 ```
 /* globals exports, require */
 //jshint strict: false
@@ -143,7 +143,7 @@ exports.thumbnail = (event, context) => {
 
 > Replace the text ``REPLACE_WITH_YOUR_TOPIC ID`` in line 16 in this code with your ```topic name``` given in ```task 2```
 
-> Select ``package.json`` > Paste the code
+> Select ``package.json`` > Paste the code below
 ```
 {
   "name": "thumbnails",
