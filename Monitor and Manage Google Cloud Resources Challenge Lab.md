@@ -5,14 +5,12 @@
 ### Run the following Commands in CloudShell
 
 ```
-export REGION=
 export USERNAME2=
 export TOPIC_NAME=
-export FUNCTION_NAME=
 ```
 ```
-gcloud config set compute/region $REGION
 BUCKET_NAME=travel-bucket-$DEVSHELL_PROJECT_ID
+SERVICE_ACCOUNT="$(gsutil kms serviceaccount -p $DEVSHELL_PROJECT_ID)"
 
 gcloud services enable \
   artifactregistry.googleapis.com \
@@ -23,7 +21,7 @@ gcloud services enable \
   logging.googleapis.com \
   pubsub.googleapis.com
 
-sleep 60
+sleep 20
 
 gsutil mb gs://$BUCKET_NAME
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
@@ -32,44 +30,33 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
 
 gcloud pubsub topics create $TOPIC_NAME
 
-PROJECT_NUMBER=$(gcloud projects list --filter="project_id:$DEVSHELL_PROJECT_ID" --format='value(project_number)')
-SERVICE_ACCOUNT="$(gsutil kms serviceaccount -p $DEVSHELL_PROJECT_ID)"
-
-gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
-  --role=roles/eventarc.eventReceiver
-
-sleep 15
-
-gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:service-$PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com \
-  --role=roles/pubsub.publisher
-
-sleep 15
-
-gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:$SERVICE_ACCOUNT \
-  --role=roles/pubsub.publisher
-
-sleep 20
-
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:$SERVICE_ACCOUNT \
   --role=roles/artifactregistry.reader
 
- sleep 60
+ sleep 10
 
-gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
-  --role=roles/iam.serviceAccountTokenCreator \
-  --project=$DEVSHELL_PROJECT_ID
+```
+> Search ```Cloud Functions``` > click on CREATE FUNCTION
+> Select Environment as ``2nd gen``
+> For ``Function name`` copy the name from ``Task 3 First line``
+> For ``Region`` select the default region
+> In `Trigger` > For ``Trigger type`` > select ``Cloud Storage``
+> For ``Event Type`` > select `google.cloud.storage.object.v1.finalized`
+> For ``Bucket`` > click on ```BROWSE``` > click on the bucket name(starting with ```travel-bucket```) > then ``SELECT``
+> Click on `MORE OPTIONS`
+> Scroll down and `GRANT` all the permissions one by one
+> If fail ``Grant``that permission again until nothing left
+> Then ``SAVE TRIGGER``
+> Click on ``GRANT ALL``
+> For `` Runtime, build, connections and security settings ``
+> In ``Autoscaling`` set the ```Maximum number of instances``` > `5`
+> Scroll down and Click ```NEXT```
 
-sleep 10
-
-mkdir ~/soumen && cd ~/soumen
-touch index.js && touch package.json
-
-cat > index.js <<'EOF_END'
+> For ``Runtime`` > select ``Node.js 20``
+> For ``Entry point`` paste `thumbnail`
+> Click on ``index.js`` > Paste this code
+```
 /* globals exports, require */
 //jshint strict: false
 //jshint esversion: 6
@@ -85,7 +72,7 @@ exports.thumbnail = (event, context) => {
   const bucketName = event.bucket;
   const size = "64x64"
   const bucket = gcs.bucket(bucketName);
-  const topicName = "$TOPIC_NAME";
+  const topicName = "REPLACE_WITH_YOUR_TOPIC ID";
   const pubsub = new PubSub();
   if ( fileName.search("64x64_thumbnail") == -1 ){
     // doesn't have a thumbnail, get the filename extension
@@ -136,77 +123,42 @@ exports.thumbnail = (event, context) => {
     console.log(`gs://${bucketName}/${fileName} already has a thumbnail`);
   }
 };
-EOF_END
-
-
-cat > package.json <<EOF_END
+```
+> Replace the text ``REPLACE_WITH_YOUR_TOPIC ID`` in line 16 in this code with your ```topic name``` given in ```task 2```
+> Select ``package.json`` > Paste the code
+```
 {
-    "name": "thumbnails",
-    "version": "1.0.0",
-    "description": "Create Thumbnail of uploaded image",
-    "scripts": {
-      "start": "node index.js"
-    },
-    "dependencies": {
-      "@google-cloud/pubsub": "^2.0.0",
-      "@google-cloud/storage": "^5.0.0",
-      "fast-crc32c": "1.0.4",
-      "imagemagick-stream": "4.1.1"
-    },
-    "devDependencies": {},
-    "engines": {
-      "node": ">=4.3.2"
-    }
+  "name": "thumbnails",
+  "version": "1.0.0",
+  "description": "Create Thumbnail of uploaded image",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "^2.0.0",
+    "@google-cloud/storage": "^5.0.0",
+    "fast-crc32c": "1.0.4",
+    "imagemagick-stream": "4.1.1"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=4.3.2"
   }
-EOF_END
-
-
-deploy_function() {
-  echo "Deploying Cloud Function..."
-  gcloud functions deploy $FUNCTION_NAME \
-    --runtime=nodejs20 \
-    --trigger-resource=$BUCKET_NAME \
-    --trigger-event=google.storage.object.finalize \
-    --entry-point=thumbnail \
-    --region=$REGION \
-    --source=. \
-    --max-instances=5 \
-    --timeout=540 \
-    --memory=512MB \
-    --quiet
 }
+```
+> Click on `DEPLOY`
+> If it fails click on ``DEPLOY`` again.
 
-check_function_status() {
-  gcloud functions describe "$FUNCTION_NAME" --region="$REGION" --format="value(status)"
-}
-
-while true; do
-  deploy_function
-  
-  while true; do
-    status=$(check_function_status)
-    if [[ "$status" == "ACTIVE" ]]; then
-      echo "Cloud Function deployment confirmed as successful."
-      break
-    else
-      echo "Waiting for deployment to complete, next retry in 210 seconds..."
-      echo "Aur Kiya Time Bhot Lagega Tabtak Reels Scroll Karlo..."
-      sleep 210
-    fi
-  done
-done
-
+### Run the following Commands in CloudShell
+```
 wget https://storage.googleapis.com/cloud-training/arc101/travel.jpg
-
 gsutil cp travel.jpg gs://$BUCKET_NAME
 
-```
-```
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:$SERVICE_ACCOUNT \
   --role=roles/artifactregistry.reader
 
- sleep 20
+ sleep 10
 
 cat > app-engine-error-percent-policy.json <<EOF_END
 {
@@ -246,7 +198,7 @@ EOF_END
 
 gcloud alpha monitoring policies create --policy-from-file="app-engine-error-percent-policy.json"
 
-sleep 200
+sleep 30
 
 ```
 
