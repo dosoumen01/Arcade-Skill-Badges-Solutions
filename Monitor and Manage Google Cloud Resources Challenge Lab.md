@@ -49,7 +49,8 @@ sleep 15
 
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
-  --role=roles/iam.serviceAccountTokenCreator
+  --role=roles/iam.serviceAccountTokenCreator \
+  --project=$DEVSHELL_PROJECT_ID
 
 sleep 10
 
@@ -185,6 +186,7 @@ while true; do
       sleep 210
     fi
   done
+done
 
 wget https://storage.googleapis.com/cloud-training/arc101/travel.jpg
 
