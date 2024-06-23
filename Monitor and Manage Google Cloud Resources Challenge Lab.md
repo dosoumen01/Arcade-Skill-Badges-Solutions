@@ -39,7 +39,7 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
   --role=roles/eventarc.eventReceiver
 
-sleep 10
+sleep 15
 
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:service-$PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com \
@@ -48,17 +48,23 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
 sleep 15
 
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+  --member=serviceAccount:$SERVICE_ACCOUNT \
+  --role=roles/pubsub.publisher
+
+sleep 20
+
+gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+  --member=serviceAccount:$SERVICE_ACCOUNT \
+  --role=roles/artifactregistry.reader
+
+ sleep 60
+
+gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
   --role=roles/iam.serviceAccountTokenCreator \
   --project=$DEVSHELL_PROJECT_ID
 
 sleep 10
-
-gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
-  --member=serviceAccount:$SERVICE_ACCOUNT \
-  --role=roles/pubsub.publisher
-
-sleep 20
 
 mkdir ~/soumen && cd ~/soumen
 touch index.js && touch package.json
@@ -200,7 +206,7 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
   --member=serviceAccount:$SERVICE_ACCOUNT \
   --role=roles/artifactregistry.reader
 
- sleep 200
+ sleep 20
 
 cat > app-engine-error-percent-policy.json <<EOF_END
 {
