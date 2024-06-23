@@ -37,24 +37,40 @@ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
  sleep 10
 
 ```
-> Search ```Cloud Functions``` > click on CREATE FUNCTION
+> Search ```Cloud Functions``` > click on ```CREATE FUNCTION```
+
 > Select Environment as ``2nd gen``
+
 > For ``Function name`` copy the name from ``Task 3 First line``
+
 > For ``Region`` select the default region
+
 > In `Trigger` > For ``Trigger type`` > select ``Cloud Storage``
-> For ``Event Type`` > select `google.cloud.storage.object.v1.finalized`
+
+> For ``Event Type`` > select ``google.cloud.storage.object.v1.finalized``
+
 > For ``Bucket`` > click on ```BROWSE``` > click on the bucket name(starting with ```travel-bucket```) > then ``SELECT``
+
 > Click on `MORE OPTIONS`
-> Scroll down and `GRANT` all the permissions one by one
-> If fail ``Grant``that permission again until nothing left
+
+> Scroll down and `GRANT` all the permissions One by One
+
+> If fail ``Grant``that permission again until nothing is left
+
 > Then ``SAVE TRIGGER``
+
 > Click on ``GRANT ALL``
+
 > For `` Runtime, build, connections and security settings ``
+
 > In ``Autoscaling`` set the ```Maximum number of instances``` > `5`
+
 > Scroll down and Click ```NEXT```
 
 > For ``Runtime`` > select ``Node.js 20``
+
 > For ``Entry point`` paste `thumbnail`
+
 > Click on ``index.js`` > Paste this code
 ```
 /* globals exports, require */
@@ -124,7 +140,9 @@ exports.thumbnail = (event, context) => {
   }
 };
 ```
+
 > Replace the text ``REPLACE_WITH_YOUR_TOPIC ID`` in line 16 in this code with your ```topic name``` given in ```task 2```
+
 > Select ``package.json`` > Paste the code
 ```
 {
@@ -146,8 +164,10 @@ exports.thumbnail = (event, context) => {
   }
 }
 ```
+
 > Click on `DEPLOY`
-> If it fails click on ``DEPLOY`` again.
+
+> If it fails U can click on ``DEPLOY`` > or > click on ``RETRY`` from the notification panel.
 
 ### Run the following Commands in CloudShell
 ```
