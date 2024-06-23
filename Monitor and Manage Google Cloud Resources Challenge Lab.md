@@ -23,7 +23,7 @@ gcloud services enable \
   logging.googleapis.com \
   pubsub.googleapis.com
 
-sleep 20
+sleep 60
 
 gsutil mb gs://$BUCKET_NAME
 gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
@@ -63,6 +63,7 @@ mkdir ~/soumen && cd ~/soumen
 touch index.js && touch package.json
 
 cat > index.js <<'EOF_END'
+
 /* globals exports, require */
 //jshint strict: false
 //jshint esversion: 6
@@ -131,7 +132,7 @@ exports.thumbnail = (event, context) => {
 };
 EOF_END
 
-sed -i '16c\  const topicName = "'$TOPIC_NAME'";' index.js
+sed -i '17c\  const topicName = "'$TOPIC_NAME'";' index.js
 
 cat > package.json <<EOF_END
 {
@@ -155,19 +156,18 @@ cat > package.json <<EOF_END
 EOF_END
 
 
-  deploy_function () {
+deploy_function() {
     gcloud functions deploy $FUNCTION_NAME \
-      --gen2 \
-      --runtime nodejs20 \
-      --entry-point thumbnail \
-      --source . \
-      --region $REGION \
-      --trigger-bucket $BUCKET_NAME \
-      --allow-unauthenticated \
-      --trigger-location $REGION \
-      --max-instances 5 \
-      --quiet
-  }
+    --gen2 \
+    --runtime nodejs20 \
+    --trigger-resource $BUCKET_NAME \
+    --trigger-event google.storage.object.finalize \
+    --entry-point thumbnail \
+    --region=$REGION \
+    --source . \
+    --max-instances 5 \
+    --quiet
+}
    
 
 while ! gcloud run services describe "$FUNCTION_NAME" --region="$REGION" &> /dev/null; do
