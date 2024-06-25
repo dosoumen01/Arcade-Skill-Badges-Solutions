@@ -5,7 +5,16 @@
 ### Run the following Commands in CloudShell
 
 ```
+export ZONE=
 
+```
+
+```
+curl -LO https://raw.githubusercontent.com/dosoumen01/Arcade-Skill-Badges-Solutions/main/Create%20a%20Secure%20Data%20Lake%20on%20Cloud%20Storage%3A%20Challenge%20Lab/arc119.sh
+
+sudo chmod +x gsp119.sh
+
+./gsp119.sh
 
 ```
 
