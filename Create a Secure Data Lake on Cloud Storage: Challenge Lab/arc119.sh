@@ -50,7 +50,7 @@ gcloud dataplex environments create dataplex-lake-env \
 
 echo -e "\033[1;32mDO THE TASK 4 MANUALLY WITH THE HELP OF LINK >> \033[1;34mhttps://console.cloud.google.com/dataplex/templates \033[0m"
 
-echo -e "\033[1;33mFOR VIDEO ASSISTANT CLICK ON THE LINK >> \033[1;31mhttps://console.cloud.google.com \033[0m"
+echo -e "\033[1;33mFOR VIDEO ASSISTANT CLICK ON THE LINK >> \033[1;31mhttps://youtu.be/U2733c0PGDk \033[0m"
 
             ;;
             
@@ -111,7 +111,7 @@ gcloud dataplex assets create customer-raw-data \
 
 echo -e "\033[1;32mDO THE TASK 4 MANUALLY WITH THE HELP OF LINK >> \033[1;34mhttps://console.cloud.google.com/dataplex/templates \033[0m"
 
-echo -e "\033[1;33mFOR VIDEO ASSISTANT CLICK ON THE LINK >> \033[1;31mhttps://console.cloud.google.com \033[0m"
+echo -e "\033[1;33mFOR VIDEO ASSISTANT CLICK ON THE LINK >> \033[1;31mhttps://youtu.be/U2733c0PGDk \033[0m"
             ;;
             
         3)
@@ -202,7 +202,7 @@ gcloud dataplex assets create customer-details-dataset \
 
 #TASK 4
 
-echo -e "\033[1;32mDO THE TASK 4 MANUALLY WITH THE HELP OF MY VIDEO >> \033[1;34mhttps://console.cloud.google.com/ \033[0m"
+echo -e "\033[1;32mDO THE TASK 4 MANUALLY WITH THE HELP OF MY VIDEO >> \033[1;34mhttps://youtu.be/U2733c0PGDk \033[0m"
 
             ;;
         *)
