@@ -1,6 +1,6 @@
 # Create a Secure Data Lake on Cloud Storage: Challenge Lab || [ARC119](https://www.cloudskillsboost.google/focuses/63857?parent=catalog) ||
 
-## Youtube Video Link [HERE]()
+## Youtube Video Link [HERE](https://youtu.be/U2733c0PGDk)
 
 ## LOGIN THE CONSOLE WITH USER ID 2 
 
