@@ -9,12 +9,29 @@ export REGION=
 ```
 
 ```
-curl -LO https://raw.githubusercontent.com/dosoumen01/Arcade-Skill-Badges-Solutions/main/Eventarc%20for%20Cloud%20Run/gsp773.sh
+curl -LO https://raw.githubusercontent.com/dosoumen01/Arcade-Skill-Badges-Solutions/main/Eventarc%20for%20Cloud%20Run/gsp773-1.sh
 
-sudo chmod +x gsp773.sh
+sudo chmod +x gsp773-1.sh
 
-./gsp773.sh
+./gsp773-1.sh
 
+```
+
+* Go to `Audit Logs` from [here](https://console.cloud.google.com/iam-admin/audit?)
+
+* Type or Paste in the filter `Google Cloud Storage`
+
+* Check the box next to `Compute Engine API`
+
+* Now On the Right Hand Side Check All The Option `Admin Read` , `Data Read` & `Data Write`  .
+  
+
+```
+curl -LO https://raw.githubusercontent.com/dosoumen01/Arcade-Skill-Badges-Solutions/main/Eventarc%20for%20Cloud%20Run/gsp773-2.sh
+
+sudo chmod +x gsp773-2.sh
+
+./gsp773-2.sh
 ```
 
 ### Congratulations 🎉 for completing the Lab !
