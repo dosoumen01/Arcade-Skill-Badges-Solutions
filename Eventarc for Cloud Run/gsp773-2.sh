@@ -17,11 +17,15 @@ gcloud eventarc triggers create trigger-auditlog \
   --event-filters="methodName=storage.objects.create" \
   --service-account=${PROJECT_NUMBER}-compute@developer.gserviceaccount.com
 
-  sleep 180
+  sleep 120
 
   gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
 
   sleep 10
+
+  gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
+
+   sleep 10
 
   gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
 
