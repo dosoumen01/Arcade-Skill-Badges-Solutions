@@ -17,14 +17,14 @@ gcloud eventarc triggers create trigger-auditlog \
 
   sleep 120
 
-  gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
+  gsutil cp random.txt gs://$DEVSHELL_PROJECT_ID-cr-bucket/random.txt
 
   sleep 10
 
-  gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
+  gsutil cp random.txt gs://$DEVSHELL_PROJECT_ID-cr-bucket/random.txt
 
    sleep 10
 
-  gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
+  gsutil cp random.txt gs://$DEVSHELL_PROJECT_ID-cr-bucket/random.txt
 
   echo -e "\033[1;33mCongratulations 🎉 , You're All Done With The Lab !! \033[0m"  
