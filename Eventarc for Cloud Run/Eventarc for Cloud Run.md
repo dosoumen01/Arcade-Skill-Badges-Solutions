@@ -1,6 +1,6 @@
 # Eventarc for Cloud Run || [GSP773](https://www.cloudskillsboost.google/focuses/15657?parent=catalog) ||
 
-## Youtube Video Link [HERE](https://youtu.be/U2733c0PGDk)
+## Youtube Video Link [HERE](https://youtu.be/m5vY0yEfyD4)
 
 ### Run the following Commands in CloudShell
 
