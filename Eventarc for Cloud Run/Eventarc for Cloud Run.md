@@ -21,7 +21,7 @@ sudo chmod +x gsp773-1.sh
 
 * Type or Paste in the filter `Google Cloud Storage`
 
-* Check the box next to `Compute Engine API`
+* Check the box next to `Google Cloud Storage`
 
 * Now on the Right Hand Side Check all the Option `Admin Read` , `Data Read` & `Data Write`  .
   
