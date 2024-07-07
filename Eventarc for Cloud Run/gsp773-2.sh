@@ -1,5 +1,8 @@
 echo "Hello World" > random.txt
+
 gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
+
+gcloud eventarc providers describe cloudaudit.googleapis.com
 
 gcloud eventarc triggers create trigger-auditlog \
   --destination-run-service=${SERVICE_NAME} \
