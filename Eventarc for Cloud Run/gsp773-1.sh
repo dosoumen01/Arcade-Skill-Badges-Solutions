@@ -14,7 +14,9 @@ export PROJECT_NUMBER="$(gcloud projects list \
   sleep 10
 
   export SERVICE_NAME=event-display
+  
   export IMAGE_NAME="gcr.io/cloudrun/hello"
+  
   gcloud run deploy ${SERVICE_NAME} \
   --image ${IMAGE_NAME} \
   --allow-unauthenticated \
@@ -34,14 +36,14 @@ export PROJECT_NUMBER="$(gcloud projects list \
 
   echo ${TOPIC_ID}
 
-  sleep 200
+  sleep 120
 
   gcloud pubsub topics publish ${TOPIC_ID} --message="Hello there"
 
-  export BUCKET_NAME=$(gcloud config get-value project)-cr-bucket
+  export BUCKET_NAME=$DEVSHELL_PROJECT_ID-cr-bucket
   
-  gsutil mb -p $(gcloud config get-value project) \
-  -l $(gcloud config get-value run/region) \
+  gsutil mb -p $DEVSHELL_PROJECT_ID \
+  -l $REGION \
   gs://${BUCKET_NAME}/
 
 echo -e "\033[1;32mENABLE THE Admin Read, Data Read, Data Write FOR Google Cloud Storage BY GO THROGH THE LINK >> \033[1;34mhttps://console.cloud.google.com/iam-admin/audit? \033[0m"
