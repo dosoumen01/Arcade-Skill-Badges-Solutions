@@ -16,4 +16,4 @@ gcloud eventarc triggers create trigger-auditlog \
 
   gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
 
-  echo -e "\033[1;33mCongratulations 🎉 , you're all done with the lab !! \033[0m"  
+  echo -e "\033[1;33mCongratulations 🎉 , You're All Done With The Lab !! \033[0m"  
