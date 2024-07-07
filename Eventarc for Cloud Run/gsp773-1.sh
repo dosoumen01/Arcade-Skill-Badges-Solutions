@@ -48,4 +48,4 @@ export PROJECT_NUMBER="$(gcloud projects list \
 
 echo -e "\033[1;32mENABLE THE Admin Read, Data Read, Data Write FOR Google Cloud Storage BY GO THROGH THE LINK >> \033[1;34mhttps://console.cloud.google.com/iam-admin/audit? \033[0m"
 
-echo -e "\033[1;33mFOR VIDEO ASSISTANT CLICK ON THE LINK >> \033[1;31mhttps://youtu.be/U2733c0PGDk?si=GSh6GcNAYB7Phi_M&t=630 \033[0m"
+echo -e "\033[1;33mFOR VIDEO ASSISTANT CLICK ON THE LINK >> \033[1;31mhttps://youtu.be/m5vY0yEfyD4?si=rZcT7tIlrrow1wWM&t=375 \033[0m"
