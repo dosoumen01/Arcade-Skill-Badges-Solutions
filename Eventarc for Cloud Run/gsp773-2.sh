@@ -1,8 +1,6 @@
 echo "Hello World" > random.txt
 
-gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
-
-gsutil cp random.txt gs://${BUCKET_NAME}/random.txt
+gsutil cp random.txt gs://$$DEVSHELL_PROJECT_ID-cr-bucket/random.txt
 
 
 export SERVICE_NAME=event-display
