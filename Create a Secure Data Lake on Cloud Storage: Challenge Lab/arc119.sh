@@ -40,12 +40,12 @@ gcloud dataplex environments create dataplex-lake-env \
 
 #TASK 4
 
-#gcloud alpha data-catalog tag-templates create customer_data_tag_template \
-  #  --location=$REGION \
- #   --project=$DEVSHELL_PROJECT_ID \
-  #  --display-name="Customer Data Tag Template" \
-  #  --field=id=Data_Owner,display-name="Data Owner",type=string \
-  #  --field=id=PII_Data,display-name="PII Data",type='enum(YES|NO)'
+gcloud alpha data-catalog tag-templates create customer_data_tag_template \
+    --location=$REGION \
+    --project=$DEVSHELL_PROJECT_ID \
+    --display-name="Customer Data Tag Template" \
+    --field=id=Data_Owner,display-name="Data Owner",type=string \
+    --field=id=PII_Data,display-name="PII Data",type='enum(YES|NO)'
 
 
 echo -e "\033[1;32mDO THE TASK 4 MANUALLY WITH THE HELP OF LINK >> \033[1;34mhttps://console.cloud.google.com/dataplex/templates \033[0m"
@@ -101,12 +101,12 @@ gcloud dataplex assets create customer-raw-data \
 
 #TASK 4
 
-#gcloud alpha data-catalog tag-templates create customer_data_tag_template \
-  #  --location=$REGION \
- #   --project=$DEVSHELL_PROJECT_ID \
-  #  --display-name="Customer Data Tag Template" \
-  #  --field=id=Data_Owner,display-name="Data Owner",type=string \
-  #  --field=id=PII_Data,display-name="PII Data",type='enum(YES|NO)'
+gcloud alpha data-catalog tag-templates create customer_data_tag_template \
+    --location=$REGION \
+    --project=$DEVSHELL_PROJECT_ID \
+    --display-name="Customer Data Tag Template" \
+    --field=id=Data_Owner,display-name="Data Owner",type=string \
+    --field=id=PII_Data,display-name="PII Data",type='enum(YES|NO)'
 
 
 echo -e "\033[1;32mDO THE TASK 4 MANUALLY WITH THE HELP OF LINK >> \033[1;34mhttps://console.cloud.google.com/dataplex/templates \033[0m"
